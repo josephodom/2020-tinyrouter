@@ -18,7 +18,22 @@ class TinyRouter
 		$this->errorHandling = $errorHandling;
 	}
 	
-	private function maybeStrToArray($routes)
+	private static function isRegex($str)
+	{
+		if(substr($str, 0, 1) != '/')
+		{
+			return false;
+		}
+		
+		if(substr($str, -1, 1) != '/')
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private static function maybeStrToArray($routes)
 	{
 		if(is_array($routes))
 		{
@@ -28,6 +43,22 @@ class TinyRouter
 		return [ $routes, ];
 	}
 	
+	private static function stringToRegex($str)
+	{
+		// If there is not : at the beginning, trust that it's already regex
+		if(substr($str, 0, 1) != ':')
+		{
+			return $str;
+		}
+		
+		$str = substr($str, 1);
+		$str = str_replace('/', '\/', $str);
+		$str = str_replace('?', '([^\/]+)', $str);
+		$str = '/^' . $str . '$/';
+		
+		return $str;
+	}
+	
 	private function add($routes, $method, $types)
 	{
 		$routes = $this->maybeStrToArray($routes);
@@ -35,6 +66,8 @@ class TinyRouter
 		
 		foreach($routes as $route)
 		{
+			$route = $this->stringToRegex($route);
+			
 			foreach($types as $type)
 			{
 				if(!isset($this->routes[$type]))
@@ -104,7 +137,7 @@ class TinyRouter
 		$this->add($routes, $method, 'POST');
 	}
 	
-	public function run($routeStr, $type)
+	public function runRoute($routeStr, $type)
 	{
 		if(!isset($this->routes[$type]))
 		{
@@ -113,14 +146,38 @@ class TinyRouter
 			return false;
 		}
 		
-		if(!isset($this->routes[$type][$routeStr]))
+		foreach(array_keys($this->routes[$type]) as $route)
 		{
-			$this->error('Route  `' . $type . '@' . $routeStr . '` does not exist');
-			
-			return false;
+			if(preg_match_all($route, $routeStr, $matches))
+			{
+				$func = $this->routes[$type][$route];
+				
+				$params = [];
+				
+				if(!empty($matches[1]))
+				{
+					$params = $matches[1];
+				}
+				
+				return call_user_func_array($func, $params);
+			}
 		}
 		
-		return $this->routes[$type][$routeStr]();
+		$this->error('Route  `' . $type . '@' . $routeStr . '` does not exist');
+		
+		return false;
+	}
+	
+	public function run()
+	{
+		$uri = '/';
+		
+		if(!empty($_GET['uri']))
+		{
+			$uri .= $_GET['uri'];
+		}
+		
+		return $this->runRoute($uri, $_SERVER['REQUEST_METHOD']);
 	}
 }
 

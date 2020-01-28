@@ -7,7 +7,7 @@ require_once 'class.tinyrouter.php';
 $router = new TinyRouter();
 
 // Without regex
-$router->any('/post/?/noregex', function($id){
+$router->any(':/post/?/noregex', function($id){
 	return 'You are attempting to view post # ' . $id . ' via the no-regex route';
 });
 
@@ -18,7 +18,7 @@ $router->any('/^\/post\/([0-9]+)\/regex/', function($id){
 });
 
 // Post
-$router->get('/post/new', function(){
+$router->get(':/post/new', function(){
 	return 'This is the page for creating a new post.<form method="post"><button type="submit">Submit</button></form>';
 });
 $router->post('/post/new', function(){
@@ -27,14 +27,14 @@ $router->post('/post/new', function(){
 
 // Multiple routes, one method
 $router->any([
-	'/multiple/routes',
-	'/many/routes',
+	':/multiple/routes',
+	':/many/routes',
 ], function(){
 	return 'This method has multiple route strings!';
 });
 
 // Display our page
-echo $router->run('/' . $_GET['uri'], $_SERVER['REQUEST_METHOD']);
+echo $router->run();
 
 // Notably missing:
 // - PUT support
