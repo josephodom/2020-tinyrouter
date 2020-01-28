@@ -14,7 +14,13 @@ $router->any(':/post/?/noregex', function($id){
 // With regex
 // This allows more control
 $router->any('/^\/post\/([0-9]+)\/regex/', function($id){
-	return 'You are attempting to view post # '. $id . ' via the regex route';
+	if($_SERVER['REQUEST_METHOD'] == 'POST')
+	{
+		return 'Posting to post # ' . $id . 'via regex route';
+	}
+	
+	return 'You are attempting to view post # '. $id . ' via the regex route'
+		. '<br><form method="post"><button type="submit">Go to $_POST?</button></form>';
 });
 
 // Post
