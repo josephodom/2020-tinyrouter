@@ -8,7 +8,7 @@ class TinyRouter
 {
 	private $errorHandling;
 	
-	private $routes = [
+	public $routes = [
 		'get' => [],
 		'post' => [],
 	];
@@ -37,7 +37,7 @@ class TinyRouter
 		{
 			foreach($types as $type)
 			{
-				if(empty($this->routes[$type]))
+				if(!isset($this->routes[$type]))
 				{
 					$this->error('Route type `' . $type . '` is not valid');
 					
@@ -71,24 +71,56 @@ class TinyRouter
 		}
 	}
 	
+	public function has($needle, $types = [ 'get', 'post', ])
+	{
+		$types = $this->maybeStrToArray($types);
+		
+		foreach($types as $type)
+		{
+			foreach(array_keys($this->routes[$type]) as $route)
+			{
+				if($route == $needle)
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	public function any($routes, $method)
 	{
-		//
+		$this->add($routes, $method, [ 'get', 'post', ]);
 	}
 	
 	public function get($routes, $method)
 	{
-		//
+		$this->add($routes, $method, 'get');
 	}
 	
 	public function post($routes, $method)
 	{
-		//
+		$this->add($routes, $method, 'post');
 	}
 	
-	public function run($routeStr)
+	public function run($routeStr, $type)
 	{
-		//
+		if(!isset($this->routes[$type]))
+		{
+			$this->error('Route type `' . $type . '` is not valid');
+			
+			return false;
+		}
+		
+		if(!isset($this->routes[$type][$routeStr]))
+		{
+			$this->error('Route  `' . $type . '@' . $routeStr . '` does not exist');
+			
+			return false;
+		}
+		
+		return $this->routes[$type][$routeStr]();
 	}
 }
 
