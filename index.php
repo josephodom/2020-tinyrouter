@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 require_once 'class.tinyrouter.php';
 
 // First, I'm going to set up how I intend to use it:
@@ -37,7 +34,7 @@ $router->any([
 });
 
 // Display our page
-echo $router->run('/multiple/routes', 'get');
+echo $router->run('/' . $_GET['uri'], $_SERVER['REQUEST_METHOD']);
 
 // Notably missing:
 // - PUT support

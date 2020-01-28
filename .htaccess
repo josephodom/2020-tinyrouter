@@ -1,2 +1,2 @@
 RewriteEngine on
-RewriteRule ^(.*)? index.php?uri=[L,QSA]
+RewriteRule ^(.*)? index.php?uri=$1 [L,QSA]

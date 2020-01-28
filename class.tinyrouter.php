@@ -9,8 +9,8 @@ class TinyRouter
 	private $errorHandling;
 	
 	public $routes = [
-		'get' => [],
-		'post' => [],
+		'GET' => [],
+		'POST' => [],
 	];
 	
 	function __construct($errorHandling = TINYROUTER_ERROR_SILENT)
@@ -71,7 +71,7 @@ class TinyRouter
 		}
 	}
 	
-	public function has($needle, $types = [ 'get', 'post', ])
+	public function has($needle, $types = [ 'GET', 'POST', ])
 	{
 		$types = $this->maybeStrToArray($types);
 		
@@ -91,17 +91,17 @@ class TinyRouter
 	
 	public function any($routes, $method)
 	{
-		$this->add($routes, $method, [ 'get', 'post', ]);
+		$this->add($routes, $method, [ 'GET', 'POST', ]);
 	}
 	
-	public function get($routes, $method)
+	public function GET($routes, $method)
 	{
-		$this->add($routes, $method, 'get');
+		$this->add($routes, $method, 'GET');
 	}
 	
-	public function post($routes, $method)
+	public function POST($routes, $method)
 	{
-		$this->add($routes, $method, 'post');
+		$this->add($routes, $method, 'POST');
 	}
 	
 	public function run($routeStr, $type)
