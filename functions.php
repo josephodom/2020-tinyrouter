@@ -17,6 +17,8 @@ function code($str)
 
 function codeFile($filename)
 {
+	$filename = 'code-' . $filename . '.txt';
+	
 	if(!file_exists($filename))
 	{
 		return 'File not found: ' . $filename;

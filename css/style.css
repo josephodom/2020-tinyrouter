@@ -62,6 +62,20 @@ h2 {
 	mix-blend-mode: difference;
 }
 
+#hero a {
+	color: #F0C;
+	font-size: calc(16px + 1vw);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+#hero a:hover,
+#hero a:focus,
+#hero a:active
+{
+	color: #F00;
+}
+
 #hero .container *:last-child {
 	margin-bottom: 0;
 }

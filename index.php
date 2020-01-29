@@ -10,7 +10,11 @@ $router = new TinyRouter();
 
 // Index route
 $router->any(':/', function(){
-	return 'Index';
+	ob_start();
+	
+	include 'view-index.php';
+	
+	return ob_get_clean();
 });
 
 
@@ -52,11 +56,24 @@ $router->any([
 	return 'This method has multiple route strings!';
 });
 
-// Display our page
+// Run our page
 // The run() method gets the route & the request method automatically
 // You could manually call routes with the runRoute() method
 // e.g. for the route /your/route via GET, use $router->runRoute(':/your/route', 'GET')
-//echo $router->run();
+// We're capturing the output in a variable called $yield
+$yield = $router->run();
+
+if($yield === false)
+{
+	ob_start();
+	
+	include 'view-404.php';
+	
+	$yield = ob_get_clean();
+}
+
+// Include the template
+// The template echoes $yield
 include 'template.php';
 
 // Notably missing:
