@@ -1,0 +1,97 @@
+/* Imports */
+
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700&display=swap');
+
+/* Structure */
+
+html {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+#main {
+	flex-grow: 1;
+}
+
+/* Theme Basics */
+
+body {
+	background-color: #F5F5F5;
+	color: #000;
+}
+
+/* Typography */
+
+body {
+	font-family: 'Baskerville';
+	font-size: 24px;
+}
+
+h1,
+h2,
+h3
+{
+	font-weight: 700;
+}
+
+h1 {
+	font-size: calc(42px + 5vw);
+}
+
+h2 {
+	font-size: calc(32px + 1vw);
+}
+
+/* Sections */
+
+#hero {
+	align-items: center;
+	background-color: rgb(46, 2, 134);
+	display: flex;
+	min-height: 100vh;
+	text-align: center;
+}
+
+#hero > * {
+	color: #FFF;
+	mix-blend-mode: difference;
+}
+
+#hero .container *:last-child {
+	margin-bottom: 0;
+}
+
+/* Code */
+
+code {
+	background-color: #111;
+	border-left: 8px solid rgb(46, 2, 134);
+	display: block;
+	color: rgb(251, 210, 255);
+	font-size: 16px;
+	max-width: 100%;
+	overflow: auto;
+	padding: 1em;
+	white-space: pre;
+}
+
+code .comment {
+	color: rgb(96, 199, 137);
+}
+
+code .method {
+	color: rgb(164, 154, 255);
+}
+
+code .string {
+	color: rgb(248, 212, 133);
+}
+
+code .variable {
+	color: rgb(133, 212, 248);
+}

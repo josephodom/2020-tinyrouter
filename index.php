@@ -1,5 +1,6 @@
 <?php
 
+require_once 'functions.php';
 require_once 'class.tinyrouter.php';
 
 // First, I'm going to set up how I intend to use it:
@@ -55,7 +56,8 @@ $router->any([
 // The run() method gets the route & the request method automatically
 // You could manually call routes with the runRoute() method
 // e.g. for the route /your/route via GET, use $router->runRoute(':/your/route', 'GET')
-echo $router->run();
+//echo $router->run();
+include 'template.php';
 
 // Notably missing:
 // - PUT support

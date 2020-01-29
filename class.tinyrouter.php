@@ -192,17 +192,18 @@ class TinyRouter
 	}
 	
 	/**
-	 * Basic run function that automatically grabs the URI $_GET param & the REQUEST_METHOD var from $_SERVER
+	 * Basic run function that automatically grabs the route string from a $_GET param & the REQUEST_METHOD var from $_SERVER
 	 *
+	 * @param string $getParam The name of the param to get the route string from
 	 * @return mixed string type on success, FALSE on failure
 	 */
-	public function run()
+	public function run($getParam = 'uri')
 	{
 		$uri = '/';
 		
-		if(!empty($_GET['uri']))
+		if(!empty($_GET[$getParam]))
 		{
-			$uri .= $_GET['uri'];
+			$uri .= $_GET[$getParam];
 		}
 		
 		return $this->runRoute($uri, $_SERVER['REQUEST_METHOD']);
