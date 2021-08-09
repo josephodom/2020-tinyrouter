@@ -1,8 +1,0 @@
-$router = new TinyRouter();
-
-$router->get(':/my/route', function()){
-	return 'Your route';
-});
-
-// If you visit /my/route via GET, this will work automatically
-$router->run();

@@ -1,0 +1,158 @@
+<!-- SOME OF THIS HTML IS GENERATED, SO SOME SPACING MIGHT BE UGLY -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/tinyrouter/">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/style.css">
+<title>TinyRouter &bull; A tiny PHP router</title>
+</head>
+<body>
+
+<main id="main">
+	<section id="hero">
+	<div class="container">
+		<h1>TinyRouter</h1>
+		
+		<h2>A tiny PHP router</h2>
+		
+		<p>
+			<a href="https://github.com/josephodom/tinyrouter" target="_blank">
+				View on GitHub
+			</a>
+		</p>
+        
+        <p>
+            Continue Reading Below &darr;
+        </p>
+	</div><!-- .container -->
+</section>
+
+<section class="py-5">
+	<div class="container">
+		<h2>Getting Started</h2>
+		
+		<p>
+			TinyRouter is simple to use. Just <strong>initialize</strong>, <strong>set routes</strong>, and <strong>run</strong>!
+		</p>
+		
+		<p>
+			<code><span class="comment">// Include the dependency
+</span>
+require_once <span class="string">'class.tinyrouter.php'</span>;
+
+<span class="comment">// Initialize your router
+</span>
+<span class="variable">$router</span> = new <span class="method">TinyRouter</span>();
+
+<span class="comment">// Declare some routes
+</span>
+<span class="variable">$router</span>-&gt;<span class="method">get</span>(<span class="string">':/'</span>, <span class="method">function</span>(){
+	<span class="comment">// your index page
+</span>
+	return <span class="string">'Index'</span>;
+});
+<span class="variable">$router</span>-&gt;<span class="method">post</span>(<span class="string">':/subscribe'</span>, <span class="method">function</span>(){
+	<span class="method">subscribe</span>();
+	return <span class="string">'You have subscribed!'</span>;
+});
+<span class="variable">$router</span>-&gt;<span class="method">any</span>(<span class="string">':/user/?/edit'</span>, <span class="method">function</span>(<span class="variable">$id</span>){
+	<span class="method">editUser</span>(<span class="variable">$id</span>, <span class="variable">$_POST</span>);
+	
+	return <span class="string">'You are editing the user with the ID # '</span> . <span class="variable">$id</span>;
+});
+
+<span class="comment">// Run your page
+</span>
+<span class="variable">$requestedRoute</span> = <span class="variable">$_GET</span>[<span class="string">'uri'</span>];
+<span class="variable">$requestMethod</span> = <span class="string">'GET'</span>;
+<span class="variable">$router</span>-&gt;<span class="method">runRoute</span>(<span class="variable">$requestedRoute</span>, <span class="variable">$requestMethod</span>);</code>		</p>
+	</div><!-- .container -->
+</section>
+
+<section class="py-5">
+	<div class="container">
+		<h2>Autorun</h2>
+		
+		<p>
+			TinyRouter can get the route string & request method for you. Here&rsquo;s how:
+		</p>
+		
+		<p>
+			<code><span class="variable">$router</span> = new <span class="method">TinyRouter</span>();
+
+<span class="variable">$router</span>-&gt;<span class="method">get</span>(<span class="string">':/my/route'</span>, <span class="method">function</span>()){
+	return <span class="string">'Your route'</span>;
+});
+
+<span class="comment">// If you visit /my/route via GET, this will work automatically
+</span>
+<span class="variable">$router</span>-&gt;<span class="method">run</span>();</code>		</p>
+		
+		<p>
+			You&rsquo;ll need to do a little bit of work to get it to read your requests, too. Here&rsquo;s an htaccess example:
+		</p>
+		
+		<p>
+			<code>RewriteEngine on
+RewriteRule ^(.*)? index.php?uri=<span class="variable">$1</span> [L,QSA]</code>		</p>
+		
+		<p>
+			This redirects all requests to index.php, and the route string gets turned into a GET parameter called &ldquo;uri&rdquo;,
+			which TinyRouter uses to get the string.
+		</p>
+	</div><!-- .container -->
+</section>
+
+<section class="py-5">
+	<div class="container">
+		<h2>404 Page</h2>
+		
+		<p>
+			To create a 404 page, simply check if running the router returns FALSE:
+		</p>
+		
+		<p>
+			<code><span class="variable">$return</span> = <span class="variable">$router</span>-&gt;<span class="method">run</span>();
+
+<span class="comment">// You should use === instead of == because an emtpy string can return false
+</span>
+<span class="comment">// It will not return an empty string as a result of an error
+</span>
+<span class="method">if</span>(<span class="variable">$return</span> === false)
+{
+	<span class="comment">// execute your 404 page here
+</span>
+}</code>		</p>
+	</div><!-- .container -->
+</section>
+
+<section class="py-5">
+	<div class="container">
+		<h2>Precise Routes</h2>
+		
+		<p>
+			If you need something a little more precise, you can use regex to match your route strings.
+		</p>
+		
+		<p>
+			<code><span class="variable">$router</span> = new <span class="method">TinyRouter</span>();
+
+<span class="variable">$router</span>-&gt;<span class="method">any</span>(<span class="string">'/^\/post\/([0-9]+)\/regex/'</span>, <span class="method">function</span>(<span class="variable">$id</span>){
+	<span class="method">if</span>(<span class="variable">$_SERVER</span>[<span class="string">'REQUEST_METHOD'</span>] == <span class="string">'POST'</span>)
+	{
+		return <span class="string">'Posting to post # '</span> . <span class="variable">$id</span> . <span class="string">'via regex route'</span>;
+	}
+	
+	return <span class="string">'You are attempting to view post # '</span>. <span class="variable">$id</span> . <span class="string">' via the regex route'</span>
+		. <span class="string">'&lt;br&gt;&lt;form method=&quot;post&quot;&gt;&lt;button type=&quot;submit&quot;&gt;Go to <span class="variable">$_POST</span>?&lt;/button&gt;&lt;/form&gt;'</span>;
+});
+
+<span class="variable">$router</span>-&gt;<span class="method">runRoute</span>(<span class="string">'/post/15/regex'</span>, <span class="string">'GET'</span>);</code>		</p>
+	</div><!-- .container -->
+</section></main>
+
+</body>
+</html>
