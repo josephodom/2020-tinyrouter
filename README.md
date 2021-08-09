@@ -4,6 +4,8 @@ A tiny one-file PHP router.
 
 This was built mostly for learning purposes.
 
+View the [website](https://josephodom.github.io/tinyrouter/)!
+
 ## Get Started Immediately
 
 ```
